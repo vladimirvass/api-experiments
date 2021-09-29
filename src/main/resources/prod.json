@@ -1,0 +1,133 @@
+{
+  "users": {
+    "guest": {
+      "credentials": {
+        "email": "auto_guest@gmail.com",
+        "password": "Qwerty12"
+      }
+    },
+    "contractor": {
+      "credentials": {
+        "email": "auto_contractor@gmail.com",
+        "password": "Qwerty12"
+      }
+    },
+    "regular": {
+      "credentials": {
+        "email": "auto_regular@gmail.com",
+        "password": "Qwerty12"
+      }
+    }
+  },
+  "addresses": [{
+    "description": "Amam shipping address",
+    "companyName": "Katran i Perushina",
+    "title": "Mrs",
+    "firstName": "Baba",
+    "inFix": "",
+    "lastName": "Meca",
+    "birthday": "1985-01-01",
+    "country": "Nederland",
+    "postalCode": "1181WP",
+    "houseNumber": "937",
+    "houseNumberExtention": "",
+    "street": "Meander",
+    "city": "Amstelveen",
+    "phoneNumber": "0612345678"
+  },
+    {
+      "companyName": "MinimaSoft Ltd",
+      "title": "Mr",
+      "firstName": "Xixo",
+      "inFix": "van der",
+      "lastName": "Xaxov",
+      "postalCode": "1000",
+      "bus": "5",
+      "houseNumber": "5",
+      "houseNumberExtention": "",
+      "street": "Rue Leopold",
+      "city": "Brussels"
+    },
+    {
+      "title": "Mr",
+      "firstName": "Automation",
+      "inFix": "van der",
+      "lastName": "Userovich",
+      "postalCode": "3573XK",
+      "houseNumber": "27",
+      "street": "SAMORA MACHELSTRAAT",
+      "city": "UTRECHT",
+      "phoneNumber": "0612345678"
+    }
+  ],
+
+  "products": {
+    "TEST-PRODUCT-001": {
+      "masterSku": "470601",
+      "name": "Cartier love armband van 18k geelgoud met 4 diamanten",
+      "brand": "Cartier",
+      "variants": [{
+        "sku": "470601110000000",
+        "size": "15 cm",
+        "colour": "Yellow gold",
+        "selling-price": 11000.00,
+        "promo-price": 10000.00,
+        "base-price": 9000.00
+      }, {
+        "sku": "470601027700000",
+        "size": "16 cm",
+        "colour": "Yellow gold",
+        "selling-price": 11000.00,
+        "promo-price": 10000.00,
+        "base-price": 9000.00
+      }]
+    },
+    "TEST-PRODUCT-002": {
+      "masterSku": "34690900",
+      "name": "Maison Francis Kurkdjian",
+      "brand": "Maison",
+      "variants": [{
+        "sku": "346909005100000",
+        "size": "70 ml",
+        "colour": "",
+        "selling-price": 215.00,
+        "promo-price": 200.00,
+        "base-price": 195.00
+      }]
+    },
+    "TEST-PRODUCT-003": {
+      "masterSku": "2110060002",
+      "name": "Tommy Hilfiger",
+      "brand": "Tommy Hilfiger",
+      "variants": [{
+        "sku": "211006000286046",
+        "size": "46",
+        "colour": "Donkerblauw",
+        "selling-price": 348.00,
+        "promo-price": 340.00,
+        "base-price": 330.00
+      }]
+
+    }
+  },
+  "giftcards": {
+    "giftcard-1-euro": "XXXX YYYY ZZZZ 0000 1111",
+    "giftcard-10-euro": "XXXX YYYY ZZZZ 0000 2222",
+    "giftcard-100-euro": "XXXX YYYY ZZZZ 0000 3333",
+    "giftcard-1000-euro": "XXXX YYYY ZZZZ 0000 4444"
+  },
+  "vouchers": {
+    "voucher-20-percent": {
+      "code": "123123123123",
+      "discountPercentage": "20"
+    },
+    "voucher-10-percent": {
+      "code": "456456456456",
+      "discountPercentage": "10"
+    },
+    "voucher-5-percent": {
+      "code": "789789789789",
+      "discountPercentage": "5"
+    }
+  }
+}
