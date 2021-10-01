@@ -7,13 +7,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dbk.datapool.demo.helper.ReadJsonFromFile;
 import org.testng.annotations.Test;
 
-public class CompareJsonObjects {
+public class CompareJsonObjectsDemo {
 
     String JsonObject1;
     String jsonObject2;
     ObjectMapper objectMapper;
     JsonNode jsonNode1;
     JsonNode jsonNode2;
+
 
     @Test
     public void compareTwoJsonObjects() throws JsonMappingException, JsonProcessingException {
@@ -84,13 +85,10 @@ public class CompareJsonObjects {
 
     @Test
     public void compareTwoJsonFiles() {
-
         ReadJsonFromFile firstJson = new ReadJsonFromFile();
         ReadJsonFromFile secondJson = new ReadJsonFromFile();
-
         String bauJson = String.valueOf(firstJson.readJsonFileAsString("uat.json"));
         String prodJson = String.valueOf(secondJson.readJsonFileAsString("prod.json"));
-
         System.out.println(bauJson.equals(prodJson));
     }
 

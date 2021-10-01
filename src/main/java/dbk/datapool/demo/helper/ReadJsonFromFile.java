@@ -1,17 +1,20 @@
 package dbk.datapool.demo.helper;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.Criteria;
+import com.jayway.jsonpath.Filter;
 import com.jayway.jsonpath.JsonPath;
-import dbk.datapool.demo.helper.databinding.models.testdata.Products;
 import dbk.datapool.demo.helper.databinding.models.testdata.TestDataSetJSON;
+import ie.msg.products.databinding.icm.ICMRoot;
+import ie.msg.products.databinding.pim.PIMProductItem;
 import net.minidev.json.JSONArray;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Class for different approaches when reading or parsing json file
@@ -51,6 +54,51 @@ public class ReadJsonFromFile {
     }
 
 
+    /**
+     * Obtaining all ICM Product SKUs from a given json file
+     * @param fileName Desired json file where resides test data
+     * @return ICM product SKUs price as BigDecimal
+     */
+    public List<Object> getAllSKUsFromICMJSON(String fileName) {
+
+        return JsonPath
+                .parse(SourceData.asString(fileName))
+                .<JSONArray>read("$..product..sku");
+    }
+
+
+    /**
+     * Obtaining all PIM Product SKUs from a given json file
+     * @param source Desired json file where resides test data
+     * @return PIM product SKUs price as BigDecimal
+     */
+    public List<Object> getAllSKUsFromPIMJSON(String source) {
+
+        return JsonPath
+                .parse(SourceData.asString(source))
+                .<JSONArray>read("$..[?(@['MWP Sellable'] == 'Yes' && " +
+                        "@.Status != 'Inactive' && " +
+                        "@.Status != '' &&  " +
+                        "@['Online Retail'] == 'Yes' || " +
+                        "@['Online Marketplace Del'] == 'Yes' ||  " +
+                        "@['Online Marketplace Col'] == 'Yes' || " +
+                        "@['Online Foodservice'] == 'Yes')].['MWP Article Code']");
+    }
+
+
+    /**
+     * Comparing two Lists of strings
+     * @param listOne The first list of objects provided for comparison
+     * @param listTwo The second list of objects
+     * @return Different elements from the second list
+     */
+    public List<Object> getDifferencesBetweenTwoCollections(List<Object> listOne, List<Object> listTwo) {
+        return listOne.stream()
+                .filter(element -> !listTwo.contains(element))
+                .collect(Collectors.toList());
+    }
+
+
     //TODO: Do it to be more flexible!! Now is hardcoded for selling-price
 
     /**
@@ -64,7 +112,7 @@ public class ReadJsonFromFile {
 
 
     /**
-     * Covert json to java object
+     * Convert json to java object
      * @param fileName json file for processing
      * @return TestDataSetJSON object for further usage
      */
@@ -79,24 +127,60 @@ public class ReadJsonFromFile {
     }
 
 
-    public BigDecimal getProductPriceFromObject(String fileName, String productSku) {
-        Products bla = readJsonFileAsObject(fileName)
-                .getProducts();
-
-        bla
-                .getTESTPRODUCT001()
-                .getVariants().get(0)
-                .getSellingPrice();
-        return null;
+    /**
+     * Convert json to java object
+     * @param fileName json file for processing
+     * @return ICMRoot (the wrapper of Intershop product export json) object for further usage
+     */
+    public ICMRoot readICMJsonFileAsObject(String fileName) {
+        ICMRoot icmDataSetObject = null;
+        try {
+            icmDataSetObject = mapper.readValue(SourceData.asString(fileName), ICMRoot.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return icmDataSetObject;
     }
 
-    public String getProductPriceFromObjectBla(String fileName, String productSku) {
-        List<Products> products = (List<Products>) readJsonFileAsObject(fileName)
-                .getProducts().getTESTPRODUCT001();
 
-        Optional<Products> matchingProduct = products.stream().
-                filter(p -> p.getTESTPRODUCT001().getVariants().get(0).getSku().equals(productSku))
-                .findFirst();
-         return matchingProduct.toString();
+    /**
+     * Convert json to java object
+     * @param fileName json file for processing
+     * @return PIMProductItem object for further usage
+     */
+    public List<PIMProductItem> readPIMJsonFileAsObjectList(String fileName) {
+        List<PIMProductItem> pimDataSetObject = null;
+        try {
+            pimDataSetObject = mapper.readValue(SourceData.asString(fileName), new TypeReference<>() {
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pimDataSetObject;
     }
+
+
+    // TODO: Look at https://support.smartbear.com/readyapi/docs/testing/jsonpath-reference.html and implement it
+
+    /**
+     * This method is not implemented/functional and stays here as an idea
+     * There is a direct way of writing JsonPath and use custom Filters
+     */
+    public void filterOnlyValidPIMProducts() {
+        Filter notInactive = Filter.filter(Criteria.where("Status").is("Inactive"));
+    }
+
+
+    /**
+     * Stream filter approach, too expensive as performance
+     * @param fileName Provided json file
+     * @return List<PIMProductItem> list of PIM product objects as PIMProductItem
+     */
+    public List<PIMProductItem> filterCollectionOfPIMObjects(String fileName) {
+        List<PIMProductItem> allProductObjects = readPIMJsonFileAsObjectList(fileName);
+        return allProductObjects.stream()
+                .filter(p -> !p.getStatus().equals("Inactive") || p.getMWPSellable().equals("Yes") || p.getID().equals(""))
+                .collect(Collectors.toList());
+    }
+
 }

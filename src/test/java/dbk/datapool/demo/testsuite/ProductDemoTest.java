@@ -37,16 +37,8 @@ public class ProductDemoTest extends ProductTestBase {
 
         // Second approach
         ReadJsonFromFile jsonAsObject = new ReadJsonFromFile();
-        System.out.println(jsonAsString.getProductPriceFromObjectBla("prod.json", sku.productSKU));
-//        System.out.println();
+//        System.out.println(jsonAsString.getProductPriceFromObjectBla("prod.json", sku.productSKU));
 
-
-//        apiPrice = new BigDecimal(getProductPriceAPI(productSKU.productSKU));
-//        jsonPrice = new BigDecimal(getProductPriceJSON());
-//        uiPrice = new BigDecimal(getProductPriceUI());
-//
-//        assertThat(apiPrice, comparesEqualTo(jsonPrice));
-//        assertThat(uiPrice, comparesEqualTo(jsonPrice));
     }
 
 }
